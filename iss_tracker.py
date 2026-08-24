@@ -8,10 +8,16 @@ my_lon = -111.7385
 
 
 while True: 
-    response = requests.get("http://api.open-notify.org/iss-now.json")
-    data = response.json()
-    lat = data['iss_position']['latitude']
-    lon = data['iss_position']['longitude']
+    try:
+        response = requests.get("http://api.open-notify.org/iss-now.json")
+        data = response.json()
+        lat = data['iss_position']['latitude']
+        lon = data['iss_position']['longitude']
+    except (requests.exceptions.RequestException, ValueError) as e:
+        print(f"Error fetching ISS location: {e}")
+        time.sleep(5)
+        continue
+    
     print(data['iss_position'])
     pin = requests.get(f"https://api.bigdatacloud.net/data/reverse-geocode-client?latitude={lat}&longitude={lon}&localityLanguage=en")
 
