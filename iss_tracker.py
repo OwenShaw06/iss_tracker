@@ -1,4 +1,5 @@
 import requests
+from math import radians, sin, cos, sqrt, atan2
 
 response = requests.get("http://api.open-notify.org/iss-now.json")
 
@@ -7,13 +8,15 @@ data = response.json()
 print(type(data))
 lat = data['iss_position']['latitude']
 lon = data['iss_position']['longitude']
-print(f"The ISS is currently at latitude {lat} and longitude {lon}.")
+
 
 my_lat = 40.3641
 my_lon = -111.7385
 
-import requests
-from math import radians, sin, cos, sqrt, atan2
+pin = requests.get(f"https://api.bigdatacloud.net/data/reverse-geocode-client?latitude={lat}&longitude={lon}&localityLanguage=en")
+
+location = pin.json()
+country = location.get('countryName', 'Unknown')
 
 def calculate_distance(lat1, lon1, lat2, lon2):
     R = 6371  # Earth's radius in kilometers
@@ -25,4 +28,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     return R * c
 
 distance = calculate_distance(my_lat, my_lon, float(lat), float(lon))
-print(f"The ISS is currently {distance:.0f} km away from you.")
+
+print(f"The ISS is currently at latitude {lat} and longitude {lon}.")
+print(f"Rougly {distance:.0f} km away from you.")
+print(f"Sitting over {country} right now.")
