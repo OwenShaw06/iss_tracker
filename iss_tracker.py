@@ -39,4 +39,3 @@ while True:
     print(f"Rougly {distance:.0f} km away from you.")
     print(f"Sitting over {country} right now.")
     time.sleep(5)
-    #Testing Github Push
